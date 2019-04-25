@@ -14,21 +14,21 @@ import java.util.Set;
 public class RedisCofig {
 
     @Bean
-    public Jedis getJedis(){  //Redis直连
-        return new Jedis("127.0.0.1",6379);
+    public Jedis getJedis() {  //Redis直连
+        return new Jedis("127.0.0.1", 6379);
     }
 
 
     //貌似不能多个连接池同时存在，必须关掉一个，不然会报socket write error
     @Bean
-    public JedisPool getJedisPool(){  //Redis连接池连接
+    public JedisPool getJedisPool() {  //Redis连接池连接
         GenericObjectPoolConfig poolConfig = new GenericObjectPoolConfig();
-        return new JedisPool(poolConfig,"127.0.0.1",6379);
+        return new JedisPool(poolConfig, "127.0.0.1", 6379);
     }
 
 
     @Bean
-    public JedisSentinelPool getJedisSentinelPool(){
+    public JedisSentinelPool getJedisSentinelPool() {
         String masterName = "mymaster";
         Set<String> sentinels = new HashSet<>();
         sentinels.add("127.0.0.1:26379");

@@ -6,9 +6,9 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Pipeline;
 
-import java.util.*;
-import java.util.function.Function;
-import java.util.function.UnaryOperator;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 
 @Service
@@ -64,23 +64,24 @@ public class RedisService {
         jedis.close();
     }
 
-    public void hmsetTest(){
-        Map<String,String> map = new HashMap<>();
+    public void hmsetTest() {
+        Map<String, String> map = new HashMap<>();
         for (int i = 0; i < 10000; i++) {
-            map.put("field:" + i,"value:" + i);
+            map.put("field:" + i, "value:" + i);
         }
         long startTime = System.currentTimeMillis();
         Jedis jedis = jedisPool.getResource();
-        jedis.hmset("hashkey:2",map);
+        jedis.hmset("hashkey:2", map);
 
         long endTime = System.currentTimeMillis();
         float excTime = (float) (endTime - startTime) / 1000;
         System.out.println("hmset执行时间：" + excTime + "s");
         jedis.close();
     }
+
     /**
      * 通过pipeline来批量插入数据
-     *
+     * <p>
      * hset     - 执行时间：1.141s
      * pipeline - 执行时间：0.024s
      */

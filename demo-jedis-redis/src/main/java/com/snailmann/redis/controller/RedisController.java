@@ -16,15 +16,15 @@ public class RedisController {
     RedisSentinelService redisSentinelService;
 
     @GetMapping("redis/test")
-    public void test(){
+    public void test() {
         redisService.hsetTest();
         redisService.hmsetTest();
         redisService.pipelineTest();
     }
 
     @GetMapping("redis/sentinel/test")
-    public void sentinelTest(){
-       redisSentinelService.sentinelTest();
+    public void sentinelTest() {
+        redisSentinelService.sentinelTest();
     }
 
 }
