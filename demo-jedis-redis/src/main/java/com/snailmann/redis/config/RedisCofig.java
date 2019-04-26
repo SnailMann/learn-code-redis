@@ -19,7 +19,9 @@ public class RedisCofig {
     }
 
 
-    //貌似不能多个连接池同时存在，必须关掉一个，不然会报socket write error
+    /**
+     * 貌似不能多个连接池同时存在，必须关掉一个，不然会报socket write error
+     */
     @Bean
     public JedisPool getJedisPool() {  //Redis连接池连接
         GenericObjectPoolConfig poolConfig = new GenericObjectPoolConfig();
