@@ -23,17 +23,17 @@ public class RemoteLock {
 
     /**
      * 加锁
+     * 使用lua脚本组合了setnx和expire命令
      *
      * @param key
      * @param ttl
      * @return
      */
-    public boolean tryLock(String key, Long ttl) {
+    public boolean tryLock(String key, String val, Long ttl) {
         Jedis jedis = jedisPool.getResource();
         try {
-            String val = Thread.currentThread().getName();
             //ResourceUtils获取file在Linux下会失效
-            String lua = getLua(ResourceUtils.getFile("classpath:lua/lock.lua"));
+            String lua = getLua(ResourceUtils.getFile("classpath:lua/trylock.lua"));
             while (true) {
                 //执行lua脚本，即将setnx操作和expire操作合并成一个原子操作
                 long result = (long) jedis.eval(lua, 1, KEY + key, val, ttl + "");
@@ -55,17 +55,21 @@ public class RemoteLock {
 
     /**
      * 释放锁
-     * 这里没有做是否是锁的持有者来释放该锁，因为本质上，比较少会出现这种问题
-     * 严苛条件下还是建议判断，也可以通过lua脚本来实现
+     * 这里使用了lua脚本，将get,del两个操作组合为一个原子操作
+     * 这里实现了，只有拥有当前锁的线程才有资格释放锁的判断
      *
      * @param key
      * @return
      */
-    public boolean releaseLock(String key) {
+    public boolean releaseLock(String key, String val) {
         //总之就是要记得关闭jedis
         Jedis jedis = jedisPool.getResource();
         try {
-            return jedis.del(KEY + key) > 0;
+            //获得lua脚本
+            String lua = getLua(ResourceUtils.getFile("classpath:lua/releaselock.lua"));
+            //执行脚本，获得返回结果,1 是释放锁成功， 0 是释放锁不成功（当前线程不是持有锁的线程，无权释放）
+            long result = (long) jedis.eval(lua, 1, KEY + key, val);
+            return result > 0;
         } catch (Exception e) {
             e.getStackTrace();
         } finally {
@@ -76,8 +80,13 @@ public class RemoteLock {
 
     }
 
+    /**
+     * 获得resource下的lua脚本
+     *
+     * @param file
+     * @return
+     */
     public String getLua(File file) {
-
         try {
             InputStream input = new FileInputStream(file);
             byte[] by = new byte[input.available()];

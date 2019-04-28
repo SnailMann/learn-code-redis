@@ -4,7 +4,7 @@
 --- DateTime: 2019/4/28 9:32
 ---
 
-
+-- 只有持有该锁的线程才能释放该锁，是为了避免锁过期了还有任务在跑的情况
 if redis.call('get', KEYS[1]) == ARGV[1] then
     return redis.call('del', KEYS[1])
 else
