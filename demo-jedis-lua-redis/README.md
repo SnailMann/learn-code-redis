@@ -2,8 +2,14 @@
 
 通过Jedis客户端调用redis, 运用lua脚本
 
+- [Spring Data Redis + Lua传送门](../demo-springboot-lua-redis)
 
-## 介绍
+## 场景
+
+- 通过Lua脚本实现Redis分布式锁
+- 通过Lua脚本实现列表分片
+
+### Redis锁场景
 
 我们知道Redis可以用于实现分布式锁，但是使用Redis分布式锁会存在一个问题，就是要解决多个原子操作组合并非原子性的问题
 比如
@@ -16,7 +22,7 @@
 我们知道Redis本身也提供了事务的方式来保证复合命令的原子性，那为什么还需要lua脚本呢，首先Redis本身的事务并不是完整的事务，有很多的缺陷，比如不支持回滚，另外Redis的事务的性能不好，所以
 我们就可以使用lua来代替
 
-## 使用lua脚本实现加锁tryLock()
+#### 使用lua脚本实现加锁tryLock()
 
 ```lua
 -- 获得锁，如果成功，就给锁一个超时时间
@@ -32,7 +38,7 @@ end
 ```
 
 
-## 使用lua脚本实现加锁releaseLock()
+#### 使用lua脚本实现加锁releaseLock()
 ```lua
 -- 只有持有该锁的线程才能释放该锁，是为了避免锁过期了还有任务在跑的情况
 if redis.call('get', KEYS[1]) == ARGV[1] then
@@ -42,3 +48,8 @@ else
 
 end
 ```
+
+
+### Redis列表分片场景
+
+ 

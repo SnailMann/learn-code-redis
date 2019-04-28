@@ -1,5 +1,6 @@
-package com.snailmann.redis.cache;
+package com.snailmann.redis.service;
 
+import com.snailmann.redis.cache.RemoteLock;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

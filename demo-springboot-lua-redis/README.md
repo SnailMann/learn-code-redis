@@ -2,7 +2,14 @@
 
 通过spring data redis + lua 操作redis
 
-## Spring Data Redis + Lua
+- [Jedis + Lua传送门](../demo-jedis-lua-redis/README.md)
+
+## Spring Data Redis + Lua场景
+
+- Redis分布式锁
+- Redis列表分片
+
+### Redis分布式锁场景
 
 加锁
 ```java
@@ -43,3 +50,6 @@
         return result != null && result > 0;
     }
 ```
+
+
+### Redis列表分片场景
