@@ -8,6 +8,7 @@
 
 - Redis分布式锁
 - Redis列表分片
+- Redis简单限流（计数限流）
 
 ### Redis分布式锁场景
 
@@ -53,3 +54,66 @@
 
 
 ### Redis列表分片场景
+
+
+### Redis计数限流场景
+
+- Lua脚本
+```java
+-- Redis简单限流
+
+local key = KEYS[1]
+local limitNum = tonumber(ARGV[1])
+local expireTime = ARGV[2]
+
+-- 如果key存在，则val + 1
+if redis.call('exists',key) == 1 then
+    -- 如果expireTime时间内，val大于limit数，则启动限流，返回0
+    if redis.call('incr',key) > limitNum then
+        return 0
+    else
+        return 1
+    end
+else
+-- 如果不存在key , 则初始化， val = 1
+    redis.call('set',key,1)
+    redis.call('expire',key,expireTime)
+    return 1
+end
+```
+
+- 限流注解RateLimit
+
+```java
+/**
+ * 限流注解
+ * 被该注解修饰的方法，会启动限流策略
+ */
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface RateLimit {
+
+    /**
+     * 限流的Redis Key
+     *
+     * @return
+     */
+    String key() default "";
+
+    /**
+     * 达多少次数后限流
+     *
+     * @return
+     */
+    int limitNum() default 5;
+
+
+    /**
+     * ttl秒内，达limitNum次数后启动限流
+     *
+     * @return
+     */
+    long ttl() default 60;
+}
+```

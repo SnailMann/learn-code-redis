@@ -1,5 +1,6 @@
 package com.snailmann.redis.service;
 
+import com.snailmann.redis.annotation.RateLimit;
 import com.snailmann.redis.cache.RemoteLock;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,8 +52,15 @@ public class RedisService {
                 System.out.println(count);
             });
         }
+    }
 
-
+    /**
+     * 限流测试，模拟接口
+     * 60s内请求了5次，就开始限流
+     */
+    @RateLimit(key = "controller", limitNum = 5, ttl = 60)
+    public void ratelimitTest() {
+        System.out.println("请求...");
     }
 
 }
