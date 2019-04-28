@@ -33,7 +33,7 @@ public class RemoteLock {
         Jedis jedis = jedisPool.getResource();
         try {
             //ResourceUtils获取file在Linux下会失效
-            String lua = getLua(ResourceUtils.getFile("classpath:lua/trylock.lua"));
+            String lua = getLua("classpath:lua/trylock.lua");
             while (true) {
                 //执行lua脚本，即将setnx操作和expire操作合并成一个原子操作
                 long result = (long) jedis.eval(lua, 1, KEY + key, val, ttl + "");
@@ -42,13 +42,9 @@ public class RemoteLock {
                     return true;
                 }
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } finally {
             jedis.close();
         }
-
-        return false;
 
     }
 
@@ -66,7 +62,7 @@ public class RemoteLock {
         Jedis jedis = jedisPool.getResource();
         try {
             //获得lua脚本
-            String lua = getLua(ResourceUtils.getFile("classpath:lua/releaselock.lua"));
+            String lua = getLua("classpath:lua/releaselock.lua");
             //执行脚本，获得返回结果,1 是释放锁成功， 0 是释放锁不成功（当前线程不是持有锁的线程，无权释放）
             long result = (long) jedis.eval(lua, 1, KEY + key, val);
             return result > 0;
@@ -83,12 +79,12 @@ public class RemoteLock {
     /**
      * 获得resource下的lua脚本
      *
-     * @param file
+     * @param path
      * @return
      */
-    public String getLua(File file) {
+    public String getLua(String path) {
         try {
-            InputStream input = new FileInputStream(file);
+            InputStream input = new FileInputStream(ResourceUtils.getFile(path));
             byte[] by = new byte[input.available()];
             input.read(by);
             return new String(by);
