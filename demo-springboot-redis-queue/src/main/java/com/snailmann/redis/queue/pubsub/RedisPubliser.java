@@ -20,6 +20,7 @@ public class RedisPubliser {
         redisTemplate.convertAndSend("java.news", "hello java?");
         redisTemplate.convertAndSend("java.news", "let's learn java everyday!!");
         redisTemplate.convertAndSend("java.news", "easy java 3.7");
+        redisTemplate.opsForZSet().rangeByScore()
     }
 
 
