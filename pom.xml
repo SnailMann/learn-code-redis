@@ -25,7 +25,7 @@
         <module>jedis</module>
         <module>jedis-lua</module>
         <module>springboot-lua</module>
-        <module>springboot-queue</module>
+        <module>springboot-pubsub</module>
     </modules>
 
     <dependencies>
