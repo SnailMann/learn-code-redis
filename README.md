@@ -1,15 +1,18 @@
 # learn-code-redis
-主要用于学习使用Redis
+用于学习 Redis
 
-- Spring Data Redis客户端
-- Jedis客户端
+## version
+- springboot 2.5.0
+- redis 6.2.0
+
+
 
 
 ## 目录
 
 |项目|描述|备注|
 | --- | --- | --- |
-| demo-jedis-redis| 使用jedis客户端操作redis |  [README](./demo-jedis-redis/README.md)|
-| demo-jedis-lua-redis | jedis + lua操作redis | [README](./demo-jedis-lua-redis/README.md)|
-| demo-springboot-lua-redis | spring data redis + lua操作redis | [README](./demo-springboot-lua-redis/README.md)|
+| jedis| 使用 jedis 客户端 |  [README](jedis/README.md)|
+| jedis-lua | jedis + lua | [README](jedis-lua/README.md)|
+| springboot-lua-redis | spring data redis + lua | [README](./demo-springboot-lua-redis/README.md)|
 
