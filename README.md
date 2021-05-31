@@ -14,5 +14,5 @@
 | --- | --- | --- |
 | jedis| 使用 jedis 客户端 |  [README](jedis/README.md)|
 | jedis-lua | jedis + lua | [README](jedis-lua/README.md)|
-| springboot-lua-redis | spring data redis + lua | [README](./demo-springboot-lua-redis/README.md)|
+| springboot-lua-redis | spring data redis + lua | [README](./springboot-lua/README.md)|
 
