@@ -2,6 +2,7 @@
 用于学习 Redis
 
 ## version
+- jdk 11
 - springboot 2.5.0
 - redis 6.2.0
 
