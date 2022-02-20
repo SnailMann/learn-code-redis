@@ -7,9 +7,9 @@
         <artifactId>learn-code-redis</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
-    <artifactId>springboot-lua</artifactId>
+    <artifactId>sb-lua</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <name>springboot-lua</name>
+    <name>sb-lua</name>
     <packaging>jar</packaging>
 
     <properties>

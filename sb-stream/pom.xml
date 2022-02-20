@@ -7,9 +7,8 @@
         <artifactId>learn-code-redis</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
-    <artifactId>springboot-pubsub</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-    <name>springboot-pubsub</name>
+    <artifactId>sb-stream</artifactId>
+    <name>sb-stream</name>
     <packaging>jar</packaging>
 
     <properties>
@@ -17,6 +16,7 @@
     </properties>
 
     <dependencies>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
@@ -28,6 +28,10 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
